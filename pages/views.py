@@ -91,7 +91,7 @@ def about_us(request):
 
 
 
-#CRUD Through AJAX overuser deta il----------ajax------------
+#CRUD Through AJAX overuser deta il----------ajax------
 
 #ajax save direct through table   
 
