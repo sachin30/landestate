@@ -1,0 +1,373 @@
+<script>
+
+    //BS5 model form add user ajax
+    $(document).on('submit','#modalformid',function(e){
+        e.preventDefault();
+        console.log("modal form button clicked");
+        output="";
+        let fname=$("#fname_id").val()
+        let lname=$("#lname_id").val()
+        let uname=$("#uname_id").val()
+        let email=$("#e_id").val()
+        let pass1=$("#id_pass1").val()
+        let pass2=$("#id_pass2").val()
+        let csr=$("input[name=csrfmiddlewaretoken]").val()
+
+        mydata={first_name:fname,last_name:lname,username:uname,email:email,password1:pass1,password2:pass2,csrfmiddlewaretoken:csr}
+
+        $.ajax({
+            url:"{% url 'pages:modaladduser' %}",
+            method:"POST",
+            data:mydata,
+            success:function(data){
+                
+                console.log(data.user_info)
+                x=data.user_info
+                if(data.status=="saved"){
+                    for(i=0;i<x.length;i++)
+                    {
+                        output += '<tr id="row'+x[i].id+'" contenteditable="false"><th scope="row" id="row'+x[i].id+'read">'+x[i].id+'</th><td id="user_'+x[i].first_name+'">'+x[i].first_name+'</td><td id="user_'+x[i].last_name+'">'+x[i].last_name+'</td><td id="user_'+x[i].username+'">'+x[i].username+'</td><td id="user_'+x[i].email+'">'+x[i].email+'</td><td id="row'+x[i].id+'read" contenteditable="false"><button type="button" style="display:inline-block" onclick="hideupdatebtn(this.getAttribute('+"'data-uid'"+'))"  class="btn btn-warning" size="5" data-uid="'+x[i].id+'" id="updateid" value="Update">Update</button><button type="button" style="display:none;" onclick="hidesavebtn(this.getAttribute('+"'data-saveid'"+'))"  class="btn btn-success" size="5" data-saveid="'+x[i].id+'" id="saveid" value="Save">Save</button><button type="button" class="btn btn-danger" size="5" data-del-id="'+x[i].id+'" id="deleteid" value="Delete">Delete</button></td></tr>'
+                    }
+                    $("#tbody_id").html(output);
+                    //console.log($("#modalformid")[0])
+                    
+                    $("#fname_id").val('');
+                    $("#lname_id").val('');
+                    $("#uname_id").val('');
+                    $("#e_id").val('');
+                    $("#id_pass1").val('');
+                    $("#id_pass2").val('');
+                    $(".modal-header button").click();
+                    console.log("window is closed");
+                    
+                }
+                else{
+                    console.log("failed")
+                    $("#modalformid")[0].reset();
+                }
+            },
+
+        })
+    })
+
+    //insert user data through form ajax
+    $(document).on('submit','#formid',function(e){
+        e.preventDefault();
+        console.log("add button clicked");
+        output="";
+        
+        let fname= $("#first_name_id").val();
+        let lname= $("#last_name_id").val();
+        let uname=$("#username_id").val();
+        let email=$("#email_id").val();
+        let pass1=$("#id_password1").val();
+        let pass2=$("#id_password2").val();
+        let csr=$("input[name=csrfmiddlewaretoken]").val()
+        //console.log(fname+lname+username+email);
+        c_page=$("#page_id").attr("data-pagenum")
+
+        mydata={current_page:c_page,first_name:fname,last_name:lname,username:uname,email:email,password1:pass1,password2:pass2,csrfmiddlewaretoken:csr}
+        $.ajax({
+            url:"{% url "pages:ajax_add" %}",
+            method:"POST",
+            data:mydata,
+            success:function(data){
+                
+                
+                x=data.user_info;
+                console.log(data.status)
+                
+                if (data.status==="saved"){
+                  
+                    for(i=0;i<x.length;i++)
+                    {
+                        output += '<tr id="row'+x[i].id+'" contenteditable="false"><th scope="row" id="row'+x[i].id+'read">'+x[i].id+'</th><td id="user_'+x[i].first_name+'">'+x[i].first_name+'</td><td id="user_'+x[i].last_name+'">'+x[i].last_name+'</td><td id="user_'+x[i].username+'">'+x[i].username+'</td><td id="user_'+x[i].email+'">'+x[i].email+'</td><td id="row'+x[i].id+'read" contenteditable="false"><button type="button" style="display:inline-block" onclick="hideupdatebtn(this.getAttribute('+"'data-uid'"+'))"  class="btn btn-warning" size="5" data-uid="'+x[i].id+'" id="updateid" value="Update">Update</button><button type="button" style="display:none;" onclick="hidesavebtn(this.getAttribute('+"'data-saveid'"+'))"  class="btn btn-success" size="5" data-saveid="'+x[i].id+'" id="saveid" value="Save">Save</button><button type="button" class="btn btn-danger" size="5" data-del-id="'+x[i].id+'" id="deleteid" value="Delete">Delete</button></td></tr>'
+                        
+                    }
+                    $('#tbody_id').html(output);
+                    $("#usernameerror").hide();
+                    $("#passworderror").hide();
+                    $("#formid")[0].reset();
+                }
+                if(data.status==="failed"){
+                    console.log("failed to save form");
+                    var htmlerror={}
+                    var erroritems = Object.keys(data.final_errors).length;
+                    var usererror='';
+                    var passerror='';
+                    $("#usernameerror").hide();
+                    $("#passworderror").hide();
+                    $("#emailerror").hide();
+                    for(i=0;i<erroritems;i++){
+                        
+                        htmlerror[i] = '<p style="color:red">'+data.final_errors[i]+'</p>'
+                        
+                        if(htmlerror[i].includes("username")){
+                            usererror='<p style="color:red">'+data.final_errors[i]+'</p>';
+                            $("#usernameerror").html(usererror);
+                            $("#usernameerror").show();
+
+                        }
+                        if(htmlerror[i].includes("password")){
+                            passerror='<p style="color:red">'+data.final_errors[i]+'</p>';
+                            $("#passworderror").html(passerror);
+                            $("#passworderror").show();
+
+                        }
+                        if(htmlerror[i].includes("email")){
+                            passerror='<p style="color:red">'+data.final_errors[i]+'</p>';
+                            $("#emailerror").html(passerror);
+                            $("#emailerror").show();
+
+                        }
+                        console.log(htmlerror)
+                    }  
+                    
+                   
+                }
+            },
+        });
+    });
+    //delete data ajax
+    $("#tbody_id").on("click","#deleteid",function(){
+        console.log("delete button clicked")
+        let id=$(this).attr("data-del-id");
+        let csr=$("input[name=csrfmiddlewaretoken]").val()
+
+        mydata={uid:id,csrfmiddlewaretoken:csr};
+        mythis=this;
+
+        $.ajax({
+            url:"{% url "pages:ajax_delete" %}",
+            method:"POST",
+            data:mydata,
+            success:function(data){
+                console.log(data.status)
+                if (data.status==1){
+                    console.log("successfully deleted");
+                    $(mythis).closest("tr").remove();  
+                }
+                else{
+                    console.log('failed to delete')
+                }
+            },
+        });
+    });
+    //Update data jaax
+    //data update through table cells process ajax
+    function hideupdatebtn(button_attr_data){
+        //console.log(button_attr_data)
+        //if($("input[data-uid='" + button_attr_data +"']").val()=="Update"){
+            console.log("update button is clicked")
+            $("button[data-uid='" + button_attr_data +"']").attr("style","display:none");
+            $("button[data-saveid='" + button_attr_data +"']").attr("style","display:inline-block");
+            $("#row"+button_attr_data).attr("contenteditable","true");
+            $("#row"+button_attr_data+"read").attr("contenteditable","false");
+            //$("#row"+button_attr_data).css({"border-style": "solid"})
+            currentrow=$("button[data-uid='" + button_attr_data +"']").closest('tr');
+            let userid=currentrow.find("th:eq(0)").css({"background-color":"gray","border": "1px solid black"});
+            currentrow.find("td:eq(0)").css({"border": "1px solid black","box-sizing": "border-box","background-color":"cyan"})
+            currentrow.find("td:eq(1)").css({"border": "1px solid black","box-sizing": "border-box","background-color":"cyan"})
+            currentrow.find("td:eq(2)").css({"border": "1px solid black","box-sizing": "border-box","background-color":"cyan"})
+            currentrow.find("td:eq(3)").css({"border": "1px solid black","box-sizing": "border-box","background-color":"cyan"})
+            currentrow.find("td:eq(4)").css({"border": "1px solid black","box-sizing": "border-box","background-color":"gray"})
+
+        //}
+
+    }
+    //save button clicked ajax
+    function hidesavebtn(button_attr_data){
+           if($("button[data-uid='" + button_attr_data +"']").closest('tr').find("td:eq(0)").text()=='' ||$("button[data-uid='" + button_attr_data +"']").closest('tr').find("td:eq(1)").text()==''  || $("button[data-uid='" + button_attr_data +"']").closest('tr').find("td:eq(2)").text()=='' || $("button[data-uid='" + button_attr_data +"']").closest('tr').find("td:eq(3)").text()==''){
+                alert("dont leave blank spaces")
+                return true;
+           }
+           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+           if (!re.test($("button[data-uid='" + button_attr_data +"']").closest('tr').find("td:eq(3)").text())) {
+               alert("enter valid email");
+               return true;
+           }
+            
+        //if($("input[data-saveid='" + button_attr_data +"']").val()=="Save"){
+            console.log("save button is clicked")
+            $("button[data-saveid='" + button_attr_data +"']").attr("style","display:none");            
+            $("button[data-uid='" + button_attr_data +"']").attr("style","display:inline-block");
+            $("#row"+button_attr_data).attr("contenteditable","false");
+            $("#row"+button_attr_data+"read").attr("contenteditable","false");
+
+            //select row of button so u can access row data values
+            currentrow=$("button[data-uid='" + button_attr_data +"']").closest('tr');
+            //retrieve values from columns
+            let userid=currentrow.find("th:eq(0)").text();
+            let fname=currentrow.find("td:eq(0)").text();
+            let lname=currentrow.find("td:eq(1)").text();
+            let username=currentrow.find("td:eq(2)").text();
+            let email=currentrow.find("td:eq(3)").text();
+            
+            let csr=$("input[name=csrfmiddlewaretoken]").val();
+            console.log(userid+"\n"+fname+"\n"+lname+"\n"+username+"\n"+email)
+
+            c_page=$("#page_id").attr("data-pagenum")
+            console.log(c_page)
+            //pack all values to send it through ajax json
+            mydata={current_page:c_page,user_id:userid,first_name:fname,last_name:lname,username:username,email:email,csrfmiddlewaretoken:csr}
+            
+            let output='';
+            $.ajax({
+                url:"{% url "pages:ajax_save" %}",
+                method:"POST",
+                data:mydata,
+                success:function(data){
+                    x=data.user_info;
+                    if (data.status==="saved"){
+                        
+                        console.log(data);
+                        for(i=0;i<x.length;i++)
+                        {
+                            output += '<tr id="row'+x[i].id+'" contenteditable="false"><th scope="row" id="row'+x[i].id+'read">'+x[i].id+'</th><td id="user_'+x[i].first_name+'">'+x[i].first_name+'</td><td id="user_'+x[i].last_name+'">'+x[i].last_name+'</td><td id="user_'+x[i].username+'">'+x[i].username+'</td><td id="user_'+x[i].email+'">'+x[i].email+'</td><td id="row'+x[i].id+'read" contenteditable="false"><button type="button" style="display:inline-block" onclick="hideupdatebtn(this.getAttribute('+"'data-uid'"+'))"  class="btn btn-warning" size="5" data-uid="'+x[i].id+'" id="updateid" value="Update">Update</button><button type="button" style="display:none;" onclick="hidesavebtn(this.getAttribute('+"'data-saveid'"+'))"  class="btn btn-success" size="5" data-saveid="'+x[i].id+'" id="saveid" value="Save">Save</button><button type="button" class="btn btn-danger" size="5" data-del-id="'+x[i].id+'" id="deleteid" value="Delete">Delete</button></td></tr>'
+                        }
+                        $('#tbody_id').html(output);
+                        //$("#user_update_id").val("")
+                        $("#formid")[0].reset();
+                    }
+                    if(data.status==="failed"){
+                        console.log("failed to save form");
+                        //$("#user_update_id").val("")
+                        $("#formid")[0].reset();
+                    }
+                },
+            });
+        //}
+    }
+    //used below code to paste DB obj values to form field to update with help of id
+    /*update data ajax
+    $("#tbody_id").on("click","#updateid",function(){
+        let id=$(this).attr("data-uid");
+        let csr=$("input[name=csrfmiddlewaretoken]").val();
+        
+    
+        
+        mydata={uid:id,csrfmiddlewaretoken:csr};
+        mythis=this;
+
+        $.ajax({
+            url:"{% url "pages:ajax_update" %}",
+            method:"POST",
+            data:mydata,
+            success:function(data){
+                console.log(data)
+                $("#user_update_id").val(data.id)
+                $("#first_name_id").val(data.first_name)
+                $("#last_name_id").val(data.last_name)
+                $("#username_id").val(data.username)
+                $("#email_id").val(data.email)   
+            },
+        });
+    });*/
+    
+    //form validation for BS5 modal form 
+    
+		function validation(){
+			console.log("in validation");
+			$("#modalformid").validate({
+				rules: {
+                            first_name:{
+                                required:true
+                            },
+                            last_name:{
+                                required:true
+                            },
+                            username:{
+                                required:true
+                            },
+							email:{
+								required:true
+							},
+							password1:{
+								required:true
+							},
+                            password2:{
+								required:true
+							}
+						},
+						
+				messages: {
+                            first_name:{
+                                required:"Please enter first name"
+                            },
+                            last_name:{
+                                required:"Please enter last name"
+                            },
+                            username:{
+                                required:"Please enter username"
+                            },
+                            email:{
+                                required:"Please enter email"
+                            },
+                            password1:{
+                                required:"Please enter password1"
+                            },
+                            password2:{
+                                required:"Please enter password2"
+                            }
+						}
+			});
+		}
+
+        //jq for dynamic error show and hide
+        $("#id_password2").on('keyup', function() {
+            $("#passworderror").hide()
+        });
+        //form validation for add user form ajax
+        function addformvalidation(){
+
+            $("#formid").validate({
+				rules: {
+                            first_name:{
+                                required:true
+                            },
+                            last_name:{
+                                required:true
+                            },
+                            username:{
+                                required:true
+                            },
+							email:{
+								required:true,
+                                email:true
+							},
+							password1:{
+								required:true
+							},
+                            password2:{
+								required:true,
+                                equalTo:"#id_password1"
+							}
+						},
+						
+				messages: {
+                            first_name:{
+                                required:"Please enter first name"
+                            },
+                            last_name:{
+                                required:"Please enter last name"
+                            },
+                            username:{
+                                required:"Please enter username"
+                            },
+                            email:{
+                                required:"Please enter email",
+                                email:"email format must be name@domain.com"
+                            },
+                            password1:{
+                                required:"Please enter password1"
+                            },
+                            password2:{
+                                required:"Please enter password to confirm",
+                                equalTo:"passwords did not match"
+                            }
+						}
+			});
+            
+            
+        }
+</script>

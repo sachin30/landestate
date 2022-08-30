@@ -1,0 +1,280 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>{% block title %}{% endblock title %} || RealEstate</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords"
+        content="Land Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- //Meta tag Keywords -->
+    <!--add some extra css-->
+    <style>
+        #footer {
+            position:fixed;
+            padding: 10px 10px 0px 10px;
+            bottom: 0;
+            width: 100%;
+            z-index:3;
+            height: 100px;
+            background: black;
+        }
+        .error{
+            color:red;
+        }
+        .errorlist{
+            color:red;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #photo_2{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding-top:20px;
+                padding-bottom:20px;
+                padding-left:50px;
+                padding-right:50px;
+
+            }
+            #photo_3{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding-top:20px;
+                padding-bottom:20px;
+                padding-left:50px;
+                padding-right:50px;
+            }
+            #photo_4{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding-top:20px;
+                padding-bottom:20px;
+                padding-left:50px;
+                padding-right:50px;
+            }
+            #photo_5{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding-top:20px;
+                padding-bottom:20px;
+                padding-left:50px;
+                padding-right:50px;
+            }
+          }
+     
+        
+    </style>
+   
+    <!-- Custom-Files -->
+    {% comment %} <link href="{% static 'styles/bootstrap.css' %}" rel='stylesheet' type='text/css' /> {% endcomment %}
+    <!-- Bootstrap-Core-CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+    
+    <link href="{% static 'styles/bootstrap.css' %}" rel='stylesheet' type='text/css' />
+    
+    <link href="{% static 'styles/styles.css' %}" rel='stylesheet' type='text/css' />
+    <!-- Style-CSS -->
+    {% comment %} <link href="{% static 'styles/font-awesome.min.css' %}" rel="stylesheet" type="text/css" /> {% endcomment %}
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //Custom-Files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Web-Fonts -->
+    {% comment %} <link
+        href="//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+        rel="stylesheet">
+    <link
+        href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+        rel="stylesheet">
+    <!-- //Web-Fonts --> {% endcomment %}
+</head>
+
+<body>
+    <!-- header -->
+    
+    <header>
+            
+            <div class="container">
+                <div class="header d-lg-flex justify-content-between align-items-center py-2 px-sm-2 px-1">
+                    <!-- logo -->
+                    <div id="logo">
+                        <h1><a href="{% url 'pages:index' %}"><span class="text-bl">L</span>and</a></h1>
+                        
+                    </div>
+                    <!-- //logo -->
+                    <!-- nav -->
+                    <div class="nav_w3ls ml-lg-5">
+                        <nav>
+                            <label for="drop" class="toggle">Menu</label>
+                            <input type="checkbox" id="drop" />
+                            <ul class="menu">
+                                
+                                <li><a href="/">Home{%if request.user.is_authenticated%}({{request.user|capfirst}}){%endif%}</a></li>
+                                <li><a href="{% url "pages:about_us" %}">About Us</a></li>
+                                {% if request.user.is_authenticated %}
+                                        
+                                        <li><a href="{% url "pages:property_list_display" %}">Properties</a></li>
+                                        <li><a href="{% url "pages:user_logout" %}">LOGOUT</a></li>
+                                        {% comment %} <li><a href="/admin">Admin</a></li> {% endcomment %}
+                                {% else %}    
+                                        <li><a href="{% url "pages:registration" %}">Registration</a></li>
+                                        <li><a href="{% url "pages:user_login" %}">Login</a></li>
+                                        <li><a href="{% url "pages:property_list_display" %}">Properties</a></li>
+                                        <li><a href="{% url "pages:contact" %}">Contact Us</a></li>
+                                {% endif %}
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- //nav -->
+                </div>
+            </div>
+        
+    </header>
+    <div style="height:73px"></div>
+    {% block content %}
+    
+    {% endblock content %}
+
+
+    <!-- Copyright -->
+    <div class="copyright-w3ls py-4">
+        <div class="container">
+            <div class="row">
+                <!-- copyright -->
+                <p class="col-lg-8 copy-right-grids text-wh text-lg-left text-center mt-lg-2">© 2019 Land. All
+                    Rights Reserved | Design by
+                    <a href="https://w3layouts.com/" target="_blank">W3layouts</a>
+                </p>
+                <!-- //copyright -->
+                <!-- social icons -->
+                <div class="col-lg-4 w3social-icons text-lg-right text-center mt-lg-0 mt-3">
+                    <ul>
+                        <li>
+                            <a href="#" class="rounded-circle">
+                                <span><i class="fab fa-facebook"></i></span>
+                            </a>
+                        </li>
+                        <li class="px-2">
+                            <a href="#" class="rounded-circle">
+                                <span><i class="fab fa-google-plus"></i></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="rounded-circle">
+                                <span><i class="fab fa-twitter"></i></span>
+                            </a>
+                        </li>
+                        <li class="pl-2">
+                            <a href="#" class="rounded-circle">
+                                <span><i class="fab fa-dribbble"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //social icons -->
+            </div>
+        </div>
+    </div>
+    <!-- End of Copyright -->
+
+    <!-- move top icon -->
+    <a href="#home" class="move-top text-center">
+        <span class="fa fa-angle-double-up" aria-hidden="true"></span>
+    </a>
+    <!-- //move top icon -->
+
+    
+    <script>
+        setTimeout(() => {
+            $("#messageid").remove();
+        }, "5000")
+    </script>
+    <script>
+        function register_validation(){
+			console.log("in validation");
+			$("#registerform").validate({
+				rules: {
+                            first_name:{
+                                required:true
+                            },
+                            last_name:{
+                                required:true
+                            },
+                            username:{
+                                required:true
+                            },
+							email:{
+								required:true
+							},
+							password1:{
+								required:true
+							},
+                            password2:{
+								required:true
+							}
+						},
+						
+				messages: {
+                            first_name:{
+                                required:"Please enter first name"
+                            },
+                            last_name:{
+                                required:"Please enter last name"
+                            },
+                            username:{
+                                required:"Please enter username"
+                            },
+                            email:{
+                                required:"Please enter email"
+                            },
+                            password1:{
+                                required:"Please enter password1"
+                            },
+                            password2:{
+                                required:"Please enter password2"
+                            }
+						}
+			});
+		}
+        function login_validation(){
+            $("#loginform").validate({
+                rules:{
+                    Name:{
+                        required:true
+                    },
+                    Password:{
+                        required:true
+                    }
+                },
+                messages:{
+                    Name:{
+                        required:"Enter Your Username"
+                    },
+                    Password:{
+                        required:"Enter Your Password"
+                    }
+                }
+            })
+        }
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" integrity="sha512-FOhq9HThdn7ltbK8abmGn60A/EMtEzIzv1rvuh+DqzJtSGq8BRdEN0U+j0iKEIffiw/yEtVuladk6rsG4X6Uqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>

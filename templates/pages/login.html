@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+
+<script>
+    addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+</script>
+<section>
+    {% include 'pages/message.html' %}
+    <div class="inner-banner-w3ls py-5" style="height:900px" id="home">
+        <div class="container py-xl-5 py-lg-3">
+            <!-- login  -->
+            <div class="modal-body my-5 pt-4">
+                <h3 class="title-w3 mb-5 text-center text-wh font-weight-bold">Login Now</h3>
+                <form method='post' id="loginform">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-form-label">Username</label>
+                        <input type="text" class="form-control" placeholder="Username" name="Name" required="">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Password</label>
+                        <input type="password" class="form-control" placeholder="*****" name="Password" required="">
+                    </div>
+
+                    <button type="submit" class="btn button-style-w3 mb-3" onclick="login_validation()">Login</button>
+                    
+                    <p style="color:white"><strong> Dont have an account? </strong> <a class="btn btn-success" style="float:right" href="{%url "pages:registration" %}">Sign Up</a></p><br>
+                    <p style="color:white"> <strong>Forgot Password?  </strong><a class="btn btn-primary" style="float:right;color:yellow" href="{%url "password_reset" %}">Reset Password</a></p>
+
+                </form>
+            </div>
+            <!-- //login -->
+        </div>
+    </div>
+</section>
+{% comment %} footer {% endcomment %}
+{% comment %} <footer class="py-5">
+    <div class="container py-xl-4 py-lg-3">
+        <div class="row footer-grids">
+            <div class="col-lg-2 col-6 footer-grid">
+                <h3 class="mb-sm-4 mb-3 pb-lg-3">Home</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#">Index</a>
+                    </li>
+                    <li>
+                        <a href="#about">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#services">Explore Properties</a>
+                    </li>
+                    <li>
+                        <a href="#gallery">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'pages:contact' %}">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-6 footer-grid">
+                <h3 class="mb-sm-4 mb-3 pb-lg-3"> Company</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#find">Find a Property</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#places">Popular Places</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-6 footer-grid footer-contact mt-lg-0 mt-4">
+                <h3 class="mb-sm-4 mb-3 pb-lg-3"> Contact Us</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        +01(24) 8543 8088
+                    </li>
+                    <li>
+                        <a href="mailto:info@example.com">info@example.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-6 footer-grid text-lg-right">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#facts">Statistical Facts</a>
+                    </li>
+                    <li>
+                        <a href="#find">Find a Property</a>
+                    </li>
+                    <li>
+                        <a href="#testi">Testimonials</a>
+                    </li>
+                    <li>
+                        <a href="#apps">Apps</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4 footer-grid mt-lg-0 mt-4">
+                <div class="footer-logo">
+                    <h2 class="text-lg-center text-center">
+                        <a class="logo text-wh font-weight-bold" href="index.html"><span
+                                class="text-bl">Just</span>Estate</a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> {% endcomment %}
+{% endblock content %}

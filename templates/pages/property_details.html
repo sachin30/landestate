@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block title %}Property Details{% endblock title %}
+{% block content %}
+    
+    <section class="container-fluid py-5" style="background-size: cover;background-image: url('/static/images/bg1.jpg') ;background-attachment:fixed;background-repeat:no-repeat">
+        <h1 class="text-bl mt-2 mb-2" style="text-align:center ;color:black">{{property_details.title|capfirst}}</h1>
+        <div class="container" style="background-color:lightcyan;">
+            <div class="container" >
+                <div class="row" style="padding-top:20px">
+                    <div class="col-12">
+                        <img class="rounded" src="/media/{{property_details.photo_main}}" height="500" width="100%" alter="property"/>
+                    
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="container my-2">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-7" id="photo_2">
+                        <img class="rounded" src="/media/{{property_details.photo_2}}" height="100%" width="100%" alter="property"/>
+            
+                    </div>
+                    <div class="col-lg-3 col-sm-7" id="photo_3">
+                        <img class="rounded" src="/media/{{property_details.photo_3}}" height="100%" width="100%" alter="property"/>
+
+                    </div>
+                    <div class="col-lg-3 col-sm-7" id="photo_4">
+                        <img class="rounded" src="/media/{{property_details.photo_4}}" height="100%" width="100%" alter="property"/>
+
+                    </div>
+                    <div class="col-lg-3 col-sm-7" id="photo_5">
+                        <img class="rounded" src="/media/{{property_details.photo_5}}" height="100%" width="100%" alter="property"/>
+
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p style="font-size:50px">{{property_details.title|capfirst}}</p>
+                        <p style="font-size:20px">{{property_details.address|capfirst}}</p>
+                        <p style="font-size:20px">{{property_details.city|capfirst}},{{property_details.state|capfirst}}</p>
+
+                     
+                    </div>
+                    <div class="col-lg-6 py-2" style="background-color:bisque">
+                        <div class="row">
+                            <h3>Broker Information: </h3>
+                            <div class="col-6">
+                                <img class="rounded" src="/media/{{property_details.broker.photo}}" height="200px" width="100%" alter="property"/>
+
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Name : </strong><strong>{{property_details.broker.first_name|capfirst}}</strong> <strong> <span>{{property_details.broker.last_name|capfirst}}</span></strong></p>
+                                <p><strong>Phone : {{property_details.broker.phone}}</strong></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <p style="font-size:20px"><b>Bedrooms:</b></p>
+                        <p style="font-size:40px;" >{{property_details.bedrooms}}<span style="margin-left:20px"><i class="fa fa-bed" style="font-size:36px"></i></span></p>
+                        
+                        <p style="font-size:20px"><b>Price:</b></p>
+                        <p style="font-size:40px;" ><i class="fa fa-inr" style="font-size:35px"></i><span style="margin-left:10px">{{property_details.price}}</span></p>
+                    
+                    </div>
+                    <div class="col-lg-4">
+                        <p style="font-size:20px"><b>Bathrooms:</b></p>
+                        <p style="font-size:40px;">{{property_details.bathrooms}}<span style="margin-left:20px"><i class="fa fa-bath" style="font-size:36px"></i></span></p>
+                        
+                        <p style="font-size:20px"><b>Garage:</b></p>
+                        <p style="font-size:40px;" >{{property_details.garage}}<span style="margin-left:20px"><i class="fa fa-car" style="font-size:36px"></i></span></p>
+                    
+                    </div>
+                    <div class="col-lg-4">
+                        <p style="font-size:20px"><b>Sqft:</b></p>
+                        <p style="font-size:40px">{{property_details.sqft}} <span style="font-size:20px">ft<sup>2</sup></span></p>
+                        
+                        <p style="font-size:20px"><b>Zipcode:</b></p>
+                        <p style="font-size:40px;" >{{property_details.zipcode}}</p>
+                    
+                    </div>
+                
+                    <div class="col-12" style="margin-bottom:100px">
+                        <hr>
+                        <p style="font-size:20px"><b>Description:</b></p>
+                        <p style="width:100%; border:none;text-indent:50px;font-size:17px">{{property_details.description|safe}}</p>
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Enquiry</button>
+                        </div>
+                        <!--Pop up modal enquiry form -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="background-color:lightcyan">
+                                    <div class="modal-header bg-success">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{property_details.title|capfirst}}-Enquiry</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <!--form for enquiry-->
+                                    <form id='enquiryformid' method="POST" action='{% url "pages:property_enquiry" %}'>
+                                        {% csrf_token %}
+                                        <div class="modal-body w-75">
+                                            <div>
+                                                <div class="form-group">
+                                                    <label>Name:</label>
+                                                    <input value="" class="form-control border" type="text" name="prop_enq_username" placeholder="Name" required="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Email:</label>
+                                                    <input value="" class="form-control border" type="email" name="prop_enq_useremail" placeholder="Email" required="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Phone Number:</label>
+                                                    <input value="" class="form-control border" type="text" name="prop_enq_userphone" placeholder="phone" required="">
+                                                </div>
+                                                <div style="display:none">
+                                                    <label>Selected property:</label>
+                                                    <input value="{{property_details.id}}" class="form-control border" type="text" name="enquired_property" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer bg-success">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="enquirybutton" onclick="validations()">Enquiry</button>
+        
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function validations(){
+            console.log("in enquiry form validation");
+            $("#enquiryformid").validate({
+                rules: {
+                            prop_enq_username:{
+                                required:true
+                            },
+                            prop_enq_useremail:{
+                                required:true
+                            },
+                            prop_enq_userphone:{
+                                required:true,
+                                digits:true,
+                                minlength:10,
+                                maxlength:10
+                            }
+                },
+                        
+                messages: {
+                            prop_enq_username:{
+                                required:"Please enter name"
+                            },
+                            prop_enq_useremail:{
+                                required:"Please enter email"
+                            },
+                            prop_enq_userphone:{
+                                required:"Please enter phone number",
+                                digits:"only Numbers"
+                            }
+                }
+            });
+        }
+    </script>
+{% endblock content %}

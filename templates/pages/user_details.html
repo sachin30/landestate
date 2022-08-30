@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block title %}User Details{% endblock title %}
+{% block content %}
+
+<section>
+    <h1>User Details</h1>
+    
+    
+    {%if users %}
+    <div class='container-fluid' id="table_id">
+        <table class="table border">
+            <thead class="border border-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">CRUD Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_id">
+                {%for user in users%}
+                {% comment %} assign dynamic id to row for specific targeting {% endcomment %}
+                <tr id="row{{user.id}}" contenteditable="false">
+                    
+                    <th scope="row" id="row{{user.id}}read">{{user.id}}</th>
+                    <td id="user_{{user.first_name}}">{{user.first_name}}</td>
+                    <td id="user_{{user.last_name}}">{{user.last_name}}</td>
+                    <td id="user_{{user.username}}">{{user.username}}</td>
+                    <td id="user_{{user.email}}">{{user.email}}</td>
+                    <td id="row{{user.id}}read" contenteditable="false">
+                        <button type="button" style="display:inline-block"
+                            onclick="hideupdatebtn(this.getAttribute('data-uid'))" class="btn btn-warning" size="5"
+                            data-uid="{{user.id}}" id="updateid" value="Update">Update</button><button type="button"
+                            style="display:none;" onclick="hidesavebtn(this.getAttribute('data-saveid'))"
+                            class="btn btn-success" size="5" data-saveid="{{user.id}}" id="saveid"
+                            value="Save">Save</button><button type="button" class="btn btn-danger" size="5"
+                            data-del-id="{{user.id}}" id="deleteid" value="Delete">Delete</button>
+                    </td>
+                </tr>
+                {%endfor%}
+                
+            </tbody>
+        </table>
+        <!--pagination buttons-->
+        <div class="pagination" data-pagenum="{{page_number}}" id="page_id">
+            <span class="step-links">
+                {% if page_number != 1 %}
+                <a href="?page=1">&laquo; <button type="button" class="btn btn-primary btn-sm">First</button></a>
+                <a href="?page={{ page_number|add:"-1"}}"><button type="button" class="btn btn-primary btn-sm">Previous</button></a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_number }} of {{ last_page_number }}.
+                </span>
+
+                {% if page_number != last_page_number  %}
+                <a href="?page={{ page_number|add:"1" }}"><button type="button" class="btn btn-primary btn-sm">Next</button></a>
+                <a href="?page={{ last_page_number }}"><button type="button" class="btn btn-primary btn-sm">Last</button> &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        <!--simple django form to submit using ajax-->
+        <div>
+            <form method="POST" id="formid">
+                {% csrf_token %}
+                <input type="hidden" name="user_update" id="user_update_id" />
+                <label>First Name:</label>
+                {{form.first_name}}
+                <br>
+                <label>last Name:</label>
+                {{form.last_name}}
+                <br>
+                <label>User Name:</label>
+                {{form.username}}
+                <!--usig div to print error as the input id are conflicting-->
+                <div id="usernameerror"></div>
+                <br>
+                <label>Email:</label>
+                {{form.email}}
+                <!--usig div to print error as the input id are conflicting-->
+                <div id="emailerror"></div>
+                <br>
+                <label>Pasword:</label>
+                {{form.password1}}
+                <br>
+                <label>Confirm Password:</label>
+                {{form.password2}}
+                <!--usig div to print error as the input id are conflicting-->
+                <div id="passworderror"></div>
+                <br>
+                
+                <button type="submit" class="btn btn-success" id="save_user" onclick="addformvalidation()">Add User </button>
+                
+
+            </form>
+
+        </div>
+
+        <!-- adding user using bootstrap model  -->
+        <!-- button of modal bs5 -->
+        {% comment %} for model form {% endcomment %}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">BS5 modal
+            ajax add user</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                {% comment %} modal form {% endcomment %}
+                <form method="POST" id='modalformid'>
+                    {% csrf_token %}
+                    <div class="modal-content" style="background-color:lightcyan">
+                        <div class="modal-header" style="background-color:green">
+                            <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body w-75">
+                            <div>
+                                <label>First Name:</label>
+                                {{modalform.first_name}}
+                            </div>
+                            <div>
+                                <label>last Name:</label>
+                                {{modalform.last_name}}
+                            </div>
+                            <div>
+                                <label>User Name:</label>
+                                {{modalform.username}}
+                            </div>
+                            <div>
+                                <label>Email:</label>
+                                {{modalform.email}}
+                            </div>
+                            <div>
+                                <label>Pasword:</label>
+                                {{modalform.password1}}
+                            </div>
+                            <div>
+                                <label>Confirm Password:</label>
+                                {{modalform.password2}}
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+
+                            <button type="submit" class="btn btn-primary" id="modal_save" onclick="validation()">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+    {% else%}
+    <h1 style="color:red">No Data Available</h1>
+    {% endif %}
+
+
+    <!--ajax.html script  here for CRUD Operations and other JS functions-->
+    {% include "pages/ajax.html" %}
+
+
+</section>
+
+{% endblock content %}

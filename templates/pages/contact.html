@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Contacts{% endblock title %}
+{% block content %}
+
+
+<section class="contact" style="height:900px" id="contact" >
+    <div class="container py-xl-5 py-lg-3">
+        <h3 class="title-w3 mb-2 text-center text-wh font-weight-bold">Contact <span>Us</span></h3>
+        <p class="text-center text-li title-w3 mb-md-5 mb-4">We are always available for your service</p>
+        <div class="contact_grid_right pt-4">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% comment %} {{form.as_p}} {% endcomment %}
+                 <div class="row contact_left_grid">
+                    <div class="col-lg-6 con-left">
+                        <div class="form-group">
+                            {{form.name}}
+                        </div>
+                        <div class="form-group">
+                            {{form.email}}
+                        </div>
+                        <div class="form-group">
+                            {{form.subject}}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 con-right">
+                        <div class="form-group">
+                            {{form.message}}
+                            {% comment %} <textarea id="textarea" placeholder="Message" name="Message" required=""></textarea> {% endcomment %}
+                        </div>
+                        <div class="input-group mb-3">
+                            {{form.phone}}
+                            {% comment %} <input type="file" class="form-control" name="File" id="inputGroupFile02"> {% endcomment %}
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                <button class="form-control btn" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

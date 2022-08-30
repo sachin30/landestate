@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Properties{% endblock title %}
+
+{% block content %}
+    
+    <section>
+        <div class="w3pvtits-services py-5" id="services">
+            <div class="container-fluid py-xl-5 py-lg-3">
+                <h3 class="title-w3 mb-2 text-center text-wh font-weight-bold">We Provide The <span>Best Deals</span> on Properties
+                </h3>
+                <p style="color:white; text-align:center" >Click on the Properties below to see detailed information about it</p>
+                <div class="row justify-content-center w3pvtits-services-row text-center pt-4">
+                {%if page_obj%}    
+                    {% for property in page_obj%}
+                        <div class="col-lg-3 pt-3 pb-3 m-3 rounded border border-dark" style="background-color:lightcyan">
+                            <img src="/media/{{property.photo_main}}" height="350" width="100%" alter="property"/>
+                            <h4 class="text-bl my-4">{{property.title}}</h4>
+                            <p class="text-left" style="color:black"><b>Address</b>   :   <span>{{property.address}}</span></p>
+                            <p class="text-left" style="color:black"><b>City</b>   :   <span>{{property.city}}</span></p>
+                            <p class="text-left" style="color:black"><b>Description</b>   :   <span>{{property.description|truncatewords:5}}</span></p>
+                            <p class="text-left" style="color:black"><b>Price</b>   :   <span>{{property.price}}</span></p>
+                            <p class="text-left" style="color:black"><b>Bedrooms</b>   :   <span>{{property.bedrooms}}</span></p>
+                            <div class="container-fluid bg-success pb-3 pt-3 text-center">
+                                <a class="service-btn btn btn-primary text-white" href="{% url "pages:property_details" property.slug %}">View Details</a>
+                            </div>
+                        </div>      
+                    {% endfor %}
+                    
+                    {% comment %} pagination buttons {% endcomment %}
+                    <div class="pagination px-3 py-3 justify-content-center">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-primary" href="?page={{page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current text-white">
+                                Page {{page_obj.number }} of {{page_obj.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if page_obj.has_next %}
+                                <a class="btn btn-primary" href="?page={{page_obj.next_page_number }}">next</a>
+                                <a class="btn btn-primary" href="?page={{page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {%elif property_list%}
+        
+                    {% for property in property_list%}
+                    <div class="col-lg-3 pt-3 pb-3 m-3 rounded border border-dark" style="background-color:lightcyan">
+                        <img src="/media/{{property.photo_main}}" height="350" width="100%" alter="property"/>
+                        <h4 class="text-bl my-4">{{property.title}}</h4>
+                        <p class="text-left" style="color:black"><b>Address</b>   :   <span>{{property.address}}</span></p>
+                        <p class="text-left" style="color:black"><b>City</b>   :   <span>{{property.city}}</span></p>
+                        <p class="text-left" style="color:black"><b>Description</b>   :   <span>{{property.description|safe}}</span></p>
+                        <p class="text-left" style="color:black"><b>Price</b>   :   <span>{{property.price}}</span></p>
+                        <p class="text-left" style="color:black"><b>Bedrooms</b>   :   <span>{{property.bedrooms}}</span></p>
+                        <div class="container-fluid bg-success pb-3 pt-3 text-center">
+                            <a class="service-btn btn btn-primary text-white" href="{% url "pages:property_details" property.slug %}">View Details</a>
+                        </div>
+                    </div>      
+                    {% endfor %}
+                
+                {% comment %} pagination buttons {% endcomment %}
+                    <div class="pagination px-3 py-3 justify-content-center">
+                        <span class="step-links">
+                            {% if property_list.has_previous %}
+                                <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-primary" href="?page={{property_list.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current text-white">
+                                Page {{property_list.number }} of {{property_list.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if property_list.has_next %}
+                                <a class="btn btn-primary" href="?page={{property_list.next_page_number }}">next</a>
+                                <a class="btn btn-primary" href="?page={{property_list.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {%else%}
+                    <h1 style="color:red">Sorry!! No Properties Available right now</h1>
+                    
+                    <h3 style="color:cyan">Feel free to Contact Us</h3>
+                {%endif%}
+                </div>
+            </div>
+            <img src="images/img.png" alt="services" class="img-fluid img-posi-w3pvt" />
+        </div>
+        
+        
+    </section>
+{% endblock content %}
