@@ -87,7 +87,7 @@ def index(request):
 
 def about_us(request):
     return render(request,"pages/about_us.html")
-#property detials dashboard
+#property detials dashboar
 
 
 
