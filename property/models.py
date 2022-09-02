@@ -23,7 +23,7 @@ class Property(models.Model):
     garage=models.IntegerField()
     sqft=models.IntegerField()
     plot_size=models.IntegerField()
-    photo_main=models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True)
+    photo_main=models.ImageField(upload_to='uploads/%Y/%m/%d/')
     photo_2=models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True)
     photo_3=models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True)
     photo_4=models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True)

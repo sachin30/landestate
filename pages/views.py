@@ -1,10 +1,12 @@
-from django.http import BadHeaderError, HttpResponse, HttpResponseRedirect,FileResponse, JsonResponse#fileresponse for pdf return
+from django.http import BadHeaderError, HttpResponse, HttpResponseRedirect,FileResponse, JsonResponse #fileresponse for pdf return
 from django.shortcuts import redirect, render, HttpResponse
 ##from justestate.settings import BASE_DIR
 from property.models import Property
 from broker.models import Broker
 from enquiry.models import Enquiry
 from contact.models import Contact
+from pages.serializers import PropertySerializer
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView,RetrieveUpdateDestroyAPIView
 
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -18,14 +20,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
-
-
 #filters
 from pages.filters import PropertyFilter
 
-
 import base64
-#from bs4 import BeautifulSoup
 
 #from pages.serializer import PropertySerializer
 # decorators
@@ -40,15 +38,6 @@ import time
 
 from django.views.decorators.csrf import csrf_exempt
 
-
-# Create your views here.
-#add user through modal form provided by BS5
-
-
-#CRUD through python over dashboard ....no ajax
-
-
-#views
 #filter and index page
 def index(request):
     user_visits=request.session.get('user_visits', 0)
@@ -88,12 +77,6 @@ def index(request):
 def about_us(request):
     return render(request,"pages/about_us.html")
 #property detials dashboar
-
-
-
-#CRUD Through AJAX overuser deta il----------ajax------
-
-#ajax save direct through table   
 
 @loginfirst
 @allowed_users(allowed_roles=['admin'])
@@ -148,7 +131,7 @@ def user_details(request):
 #display the list of properties for user or any viewer
 #goes to properties html
 def property_list_display(request):
-    property_list = Property.objects.all()
+    property_list = Property.objects.all().order_by('-id')
     paginator = Paginator(property_list, 2) 
 
     page_number = request.GET.get('page')
@@ -156,7 +139,6 @@ def property_list_display(request):
     
     context={'page_obj':page_obj}
     return render(request,"pages/properties.html",context)
-
 
 #displaying the all details of single property
 def property_details(request,slug):
@@ -196,6 +178,7 @@ def registration(request):
     
     
     context['form']= form
+    
     return render(request,"pages/registration.html",context)
 
 #user login
@@ -215,6 +198,7 @@ def user_login(request):
             messages.info(request,"Wrong Credentials")
             return redirect("/user_login")
     return render(request,"pages/login.html")
+
 @loginfirst
 def user_logout(request):
     logout(request)
@@ -279,8 +263,6 @@ def contact(request):
     context['form']= form
     return render(request,"pages/contact.html",context)
     
-
-
 #property enquiry (new) 
 def property_enquiry(request):
     if request.method=="POST":
@@ -310,4 +292,38 @@ def property_enquiry(request):
     else:
         return HttpResponseRedirect('/property_details')
 
+class PropertyList(ListAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
 
+class PropertyCreate(CreateAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyRetrieve(RetrieveAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyUpdate(UpdateAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyDestroy(DestroyAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyListCreate(ListCreateAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyRetrieveUpdate(RetrieveUpdateAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyRetrieveDestroy(RetrieveDestroyAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer
+
+class PropertyRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+    queryset= Property.objects.all()
+    serializer_class = PropertySerializer

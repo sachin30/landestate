@@ -15,11 +15,11 @@
                         <div class="col-lg-3 pt-3 pb-3 m-3 rounded border border-dark" style="background-color:lightcyan">
                             <img src="/media/{{property.photo_main}}" height="350" width="100%" alter="property"/>
                             <h4 class="text-bl my-4">{{property.title}}</h4>
-                            <p class="text-left" style="color:black"><b>Address</b>   :   <span>{{property.address}}</span></p>
-                            <p class="text-left" style="color:black"><b>City</b>   :   <span>{{property.city}}</span></p>
-                            <p class="text-left" style="color:black"><b>Description</b>   :   <span>{{property.description|truncatewords:5}}</span></p>
-                            <p class="text-left" style="color:black"><b>Price</b>   :   <span>{{property.price}}</span></p>
-                            <p class="text-left" style="color:black"><b>Bedrooms</b>   :   <span>{{property.bedrooms}}</span></p>
+                            <p class="text-left" style="color:black"> <b>Address</b>   :   <span>{{property.address}}</span></p>
+                            <p class="text-left" style="color:black"> <b>City</b>   :   <span>{{property.city}}</span></p>
+                            <p class="text-left" style="color:black"> <b>Description</b>   :   <span>{{property.description|safe|truncatechars:30}}</span></p>
+                            <p class="text-left" style="color:black"> <b>Price</b>   :   <span>{{property.price}}</span></p>
+                            <p class="text-left" style="color:black"> <b>Bedrooms</b>   :   <span>{{property.bedrooms}}</span></p>
                             <div class="container-fluid bg-success pb-3 pt-3 text-center">
                                 <a class="service-btn btn btn-primary text-white" href="{% url "pages:property_details" property.slug %}">View Details</a>
                             </div>
@@ -52,7 +52,7 @@
                         <h4 class="text-bl my-4">{{property.title}}</h4>
                         <p class="text-left" style="color:black"><b>Address</b>   :   <span>{{property.address}}</span></p>
                         <p class="text-left" style="color:black"><b>City</b>   :   <span>{{property.city}}</span></p>
-                        <p class="text-left" style="color:black"><b>Description</b>   :   <span>{{property.description|safe}}</span></p>
+                        <p class="text-left" style="color:black"><b>Description</b>   :   <span>{{property.description|safe|truncatechars:30}}</span></p>
                         <p class="text-left" style="color:black"><b>Price</b>   :   <span>{{property.price}}</span></p>
                         <p class="text-left" style="color:black"><b>Bedrooms</b>   :   <span>{{property.bedrooms}}</span></p>
                         <div class="container-fluid bg-success pb-3 pt-3 text-center">

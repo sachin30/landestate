@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'rest_framework',
+    
     
     
 ]
@@ -149,3 +151,8 @@ EMAIL_HOST_USER = "sachinpandhare1996@gmail.com"
 EMAIL_HOST_PASSWORD = "gpirdplqfiwsprkl"
 EMAIL_USE_TLS = True
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'autoParagraph': False
+    },
+}

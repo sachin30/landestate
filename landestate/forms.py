@@ -4,20 +4,6 @@ from property.models import Property
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-# class RegistrationForm(forms.ModelForm):
-    
-#     class Meta:
-#         model = Registration
-#         fields = ('user_name',"email","password","confirm_password","user_photo")
-#         widgets = {
-#             'user_name':forms.TextInput(attrs={"class":'form-control'}),
-#             'email':forms.EmailInput(attrs={"class":'form-control'}),
-#             'password':forms.PasswordInput(attrs={"class":'form-control'}),
-#             'confirm_password':forms.PasswordInput(attrs={"class":'form-control'}),
-#             'user_photo':forms.FileInput(attrs={"class":'form-control form-control-lg'}),
-#         }
-
-#user creation for----use User class to assign (user) model fields
 
 
 

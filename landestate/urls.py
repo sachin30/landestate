@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
+from pages import views
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,11 +27,23 @@ admin.site.site_header="JustEstate Project Administration"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("pages.urls")),
-
+    
     path("password_reset/",auth_views.PasswordResetView.as_view(template_name="pages/password_reset.html"),name="password_reset"),
     path("password_reset_done/",auth_views.PasswordResetDoneView.as_view(template_name="pages/password_reset_sent.html"),name="password_reset_done"),
     path("password_reset_confirm/<uidb64>/<token>/",auth_views.PasswordResetConfirmView.as_view(template_name="pages/password_reset_form.html"),name="password_reset_confirm"),
     path("password_reset_complete/",auth_views.PasswordResetCompleteView.as_view(template_name="pages/password_reset_done.html"),name="password_reset_complete"),
+
+    path("property_list_api/",views.PropertyList.as_view()),
+    path("property_create_api/",views.PropertyCreate.as_view()),
+    path("property_retrieve_api/<int:pk>/",views.PropertyRetrieve.as_view()),
+    path("property_update_api/<int:pk>/",views.PropertyUpdate.as_view()),
+    path("property_destroy_api/<int:pk>/",views.PropertyDestroy.as_view()),
+    path("property_list_create_api/",views.PropertyListCreate.as_view()),
+    path("property_retrieve_update_api/<int:pk>/",views.PropertyRetrieveUpdate.as_view()),
+    path("property_retrieve_destroy_api/<int:pk>/",views.PropertyRetrieveDestroy.as_view()),
+    path("property_retrieve_update_destroy_api/<int:pk>/",views.PropertyRetrieveUpdateDestroy.as_view()),
+
+
 
 ]
 
