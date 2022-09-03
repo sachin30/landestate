@@ -1,0 +1,1 @@
+web: gunicorn landestate.wsgi --log-file
