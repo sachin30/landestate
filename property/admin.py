@@ -7,7 +7,7 @@ from django.utils.html import format_html
 class PropertyAdmin(admin.ModelAdmin):
     
     prepopulated_fields = {
-        'slug': ['title'],
+        'slug': ['title','city'],
     }
     # fields=("title","address","city","state","zipcode","photo_main","description","slug","bedrooms","bathrooms","sqft","plot_size","slug")
     readonly_fields=("photo_preview",)

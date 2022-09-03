@@ -123,7 +123,7 @@
                             <input type="checkbox" id="drop" />
                             <ul class="menu">
                                 
-                                <li><a href="/">Home{%if request.user.is_authenticated%}({{request.user|capfirst}}){%endif%}</a></li>
+                                <li><a href="/">Home{%if request.user.is_authenticated%}[{{request.user|capfirst}}]{%endif%}</a></li>
                                 <li><a href="{% url "pages:about_us" %}">About Us</a></li>
                                 {% if request.user.is_authenticated %}
                                         
@@ -203,7 +203,7 @@
     <script>
         setTimeout(() => {
             $("#messageid").remove();
-        }, "5000")
+        }, "5000") 
     </script>
     <script>
         function register_validation(){
